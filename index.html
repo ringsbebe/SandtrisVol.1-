@@ -39,7 +39,7 @@
             justify-content: center;
             width: 100%;
             max-width: 800px;
-            height: 100%; /* 確保填滿 */
+            height: 100%; 
         }
 
         /* 遊戲區域 */
@@ -217,7 +217,7 @@
             user-select: none;
             cursor: pointer;
             transition: background 0.1s;
-            margin: 5px 0; /* 垂直間距 */
+            /* 移除垂直間距，改由父容器控制 */
         }
 
         .control-btn:active {
@@ -229,7 +229,7 @@
         /* --- RWD 響應式調整 (針對手機直式) --- */
         @media (max-width: 768px) {
             h1 {
-                display: none; /* 手機版隱藏標題以節省空間 */
+                display: none; /* 手機版隱藏標題 */
             }
 
             body {
@@ -240,18 +240,18 @@
             #main-layout {
                 flex-direction: column;
                 align-items: center;
-                gap: 5px;
+                gap: 10px;
                 height: 100%;
             }
 
-            /* 手機版頂部資訊列 (原本的 Sidebar) */
+            /* 1. 手機版頂部資訊列 (Sidebar) */
             #sidebar {
                 flex-direction: row;
                 width: 95%;
                 justify-content: space-between;
                 gap: 5px;
                 padding-top: 0;
-                order: 1; /* 放在最上面 */
+                order: 1; /* 最上方 */
             }
 
             .panel {
@@ -278,47 +278,48 @@
                 height: 25px;
             }
 
-            /* 手機版遊戲主區域 */
+            /* 2. 手機版遊戲主區域 (Canvas) */
             #game-area {
-                order: 2; /* 放在中間 */
-                flex-direction: row; /* 改為橫向排列：左遊戲，右按鈕 */
-                width: 98%;
-                height: 80vh; /* 佔據大部分高度 */
-                align-items: center;
-                justify-content: space-between;
+                order: 2; /* 中間 */
+                flex-direction: column; /* 垂直排列 */
+                width: 100%;
+                /* 自動計算高度，留空間給下方按鈕 */
+                height: auto; 
+                flex-grow: 1; 
+                justify-content: center;
             }
 
             #game-container {
-                height: 100%;
-                /* 寬度自動適應比例 */
-                width: auto; 
-                max-width: 75%; /* 留空間給右邊按鈕 */
-                border-width: 2px;
+                /* 讓寬度適應螢幕，高度自動 */
+                width: 85vw; 
+                height: auto;
+                aspect-ratio: 2 / 3;
+                max-height: 60vh; /* 限制高度以免蓋住按鈕 */
             }
 
             #controls-hint {
                 display: none;
             }
 
-            /* 手機版按鈕區域 */
+            /* 3. 手機版按鈕區域 (Bottom Controls) */
             #mobile-controls {
                 display: flex;
-                flex-direction: column; /* 垂直排列 */
+                flex-direction: row; /* 水平排列 */
                 justify-content: center;
                 align-items: center;
-                width: 20%; /* 佔據右側空間 */
-                height: 100%;
-                gap: 10px;
+                width: 100%;
+                gap: 30px; /* 按鈕間距 */
+                margin-top: 20px;
+                margin-bottom: 20px;
+                order: 3; /* 最下方 */
             }
 
             .control-btn {
-                width: 55px;
-                height: 55px;
-                font-size: 20px;
+                width: 70px; /* 加大按鈕 */
+                height: 70px;
+                font-size: 28px;
+                border-radius: 50%; /* 圓形按鈕 */
             }
-            
-            /* 調整按鈕順序：上(左) 中(右) 下(下) 或符合人體工學 */
-            /* 這裡使用：上=左, 中=右, 下=下 */
         }
     </style>
 </head>
@@ -356,10 +357,10 @@
             </div>
             
             <div id="mobile-controls">
-                <!-- 垂直排列：左、右、下 -->
+                <!-- 水平排列：左、下、右 -->
                 <div class="control-btn" id="btn-left">←</div>
+                <div class="control-btn" id="btn-down">↓</div>
                 <div class="control-btn" id="btn-right">→</div>
-                <div class="control-btn" id="btn-down" style="margin-top: 20px;">↓</div>
             </div>
 
             <div id="controls-hint">
